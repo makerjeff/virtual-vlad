@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+
+    <title>make a call</title>
+
+    <style>
+        * {
+
+            -webkit-appearance: none;
+            appearance: none;
+
+            outline: none;
+
+            background: black;
+            color: white;
+
+
+        }
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+
+        }
+
+
+        button {
+
+            margin: 10px;
+            width: 80px;
+            height: 80px;
+
+            background: black;
+            border: 1px solid white;
+        }
+
+        #dial_pad {
+            width: 350px;
+            height: 350px;
+        }
+
+        #display {
+            height: 90px;
+            width: 400px;
+
+            font-size: 3em;
+        }
+
+        #call {
+            width: calc(80px + 80px + 80px + 50px);
+        }
+
+        .numeric_button {
+            border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="display" class="display"></div>
+
+<div id="dial_pad">
+    <button id="one" class="numeric_button">1</button>
+    <button id="two" class="numeric_button">2</button>
+    <button id="three" class="numeric_button">3</button> <br>
+    <button id="four" class="numeric_button">4</button>
+    <button id="five" class="numeric_button">5</button>
+    <button id="six" class="numeric_button">6</button><br>
+    <button id="seven" class="numeric_button">7</button>
+    <button id="eighty" class="numeric_button">8</button>
+    <button id="nine" class="numeric_button">9</button>
+</div>
+
+
+<button id="call">call</button>
+
+<script>
+    var number_to_call = '';
+
+    var display = document.getElementById('display');
+    var button_1 = document.getElementById('one');
+    var button_2 = document.getElementById('two');
+    var button_3 = document.getElementById('three');
+    var button_4 = document.getElementById('four');
+    var button_5 = document.getElementById('five');
+    var button_6 = document.getElementById('six');
+    var button_7 = document.getElementById('seven');
+    var button_8 = document.getElementById('eight');
+    var button_9 = document.getElementById('nine');
+    var button_call = document.getElementById('call');
+
+    document.addEventListener('click', function(e) {
+        console.log(e.target.id);
+
+        if (e.target.classList.contains('numeric_button')) {
+            update_display(e.target.innerHTML);
+            console.log(number_to_call);
+        }
+
+        else if (e.target.id === 'call') {
+
+            if (number_to_call === '' || number_to_call === undefined) {
+                alert('enter a number');
+            } else {
+                window.location.href = 'tel:' +  Number(number_to_call);
+
+            }
+
+        }
+    });
+
+    function update_display(number) {
+        number_to_call += number;
+        display.innerHTML += number;
+    }
+
+
+
+</script>
+
+</body>
+</html>

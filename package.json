@@ -1,0 +1,19 @@
+{
+  "name": "virtual-vlad-server",
+  "version": "0.0.1",
+  "description": "Experimentations in a virtual IT director.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jefferson Wu <makerjeffwu@gmail.com>",
+
+  "license": "ISC",
+  "dependencies": {
+    "express":"latest",
+    "chalk": "latest",
+    "clear": "latest",
+    "socket.io": "latest",
+    "natural":"latest"
+  }
+}
