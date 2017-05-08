@@ -11,6 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "express":"latest",
+    "express-handlebars":"latest",
+    "express-useragent":"latest",
+    "junk":"latest",
+    "mongoose":"latest",
+    "jsonwebtoken": "latest",
     "chalk": "latest",
     "clear": "latest",
     "socket.io": "latest",
