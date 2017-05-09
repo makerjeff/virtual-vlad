@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-    <title>speech synth</title>
+
+    <title>V2</title>
 
     <style>
 
@@ -125,7 +127,7 @@
         var voice_to_use;
 
         voices.forEach(function(elem, ind, arr) {
-            if(elem.voiceURI ==='Google UK English Female') {
+            if(elem.voiceURI ==='Google UK English Male') {
                 //console.log(elem);
                 voice_to_use = elem;
             }
@@ -153,16 +155,32 @@
     }
 
     function populate_result_div() {
-        questions.forEach(function(elem, ind, arr) {
-            var p = d.createElement('p');
-            p.innerHTML = elem;
 
-            p.addEventListener('click', function(e) {
-                stray_button_utter(p.innerHTML);
-            });
+        $.ajax({
+            method: 'GET',
+            url: '/api/get_questions',
+            success: function(data, status, jqxhr){
+                console.log('Data grabbed.');
+                console.log(data);
+                result_div.innerHTML = '';
 
-            result_div.appendChild(p);
 
+
+                data.payload.data[0].solutions.forEach(function(elem, ind, arr) {
+
+                    var p = d.createElement('p');
+                    p.innerHTML = elem;
+
+                    p.addEventListener('click', function(e) {
+                        stray_button_utter(p.innerHTML);
+                    });
+
+                    result_div.appendChild(p);
+                });
+            },
+            error: function(jqxhr, status, error) {
+                console.log('Error occurred during AJAX. ' + error);
+            }
         });
     }
 

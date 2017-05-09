@@ -1,0 +1,30 @@
+[
+  {
+    "problem":"My external monitor is not working.",
+    "solutions": [
+      "1. Check to make sure the power cable is plugged in to the outlet.",
+      "2. Check to make sure all the connections from outlet to monitor are tight.",
+      "3. Is the power on? Press the power button and see if the monitor will turn on.",
+      "4. If the above steps do not work, try restarting the computer.",
+      "5. If all else fails, please contact IT with the link below."
+    ]
+  },
+  {
+    "problem":"I can't access the server. My password doesn't work.",
+    "solution": [
+      "1. Is there a period '.' between your first name and last name?",
+      "2. Have you recently reset the password?",
+      "3. Are you connected to the correct WiFi? It won't work if you're on the 1 80 Guest WiFi.",
+      "4. If all else fails, please contact IT with the link below."
+    ]
+  },
+  {
+    "problem":"I can't print.",
+    "solution":[
+      "1. Are you connected to the correct WiFi? It won't work if you're on the 1 80 Guest WiFi.",
+      "2. Are you releasing the job at the printer? At the printer, hit the 'job status' button, select your name, and select 'release all'.",
+      "3. Pause the job. Turn off Wifi then back on again. Resume the job.",
+      "4. if all else fails, please contact IT with the link below."
+    ]
+  }
+]

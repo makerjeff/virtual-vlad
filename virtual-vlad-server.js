@@ -16,6 +16,11 @@ const chalk             = require('chalk');
 const clear             = require('clear');
 const io                = require('socket.io')(http);
 
+// ------------------------
+// custom modules ---------
+// ------------------------
+const gqm = require(process.cwd() + '/models/get_questions_module');
+
 // =========================
 // HTTPS ===================
 // =========================
@@ -80,6 +85,32 @@ app.get('/:page', function(req, res){
 });
 
 
+// custom router
+var api_router = express.Router();
+
+// api middleware
+api_router.use(function(req, res, next) {
+    console.log('API Router route hit,');
+    next();
+});
+
+// api_routes
+api_router.get('/get_questions', function(req, res) {
+    gqm.get_questions_promise().then(function(data) {
+        console.log(data);
+        res.json(data);
+
+    }).catch(function(reason){
+        console.log(reason);
+        res.json(reason);
+    });
+});
+
+
+// register router
+app.use('/api/', api_router);
+
+
 // ========================
 // CATCH ALL MIDDLEWARE ===
 // ========================
@@ -109,7 +140,7 @@ if (port === '3443') {
             console.log(Error('Error: ' + err));
         } else {
             clear();
-            console.log(chalk.blue('[SECURE] Canvas Core on port ' + port));
+            console.log(chalk.blue('[SECURE] Virtual Vlad Server on port ' + port));
         }
     });
 } else {
@@ -118,7 +149,7 @@ if (port === '3443') {
             console.log(Error('Error: ' + err));
         } else {
             clear();
-            console.log(chalk.yellow('[UNSECURE] Canvas Core on port ' + port));
+            console.log(chalk.yellow('[UNSECURE] Virtual Vlad Server on port ' + port));
         }
     });
 

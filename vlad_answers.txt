@@ -1,3 +1,4 @@
+QUESTION:
 1. Why does my second or external monitor not work?
 
 Answers are:
@@ -7,6 +8,7 @@ Answers are:
 4. Have you rebooted lately? Sometimes the video driver fails and a reboot is required to reset it.
 5. All else fails, contact IT.
 
+QUESTION:
 2. I cannot log into the server. My password isn't being accepted.
 
 Answers:
@@ -14,6 +16,7 @@ Answers:
 2. Have you reset it lately?
 3. Are you connected to the correct WiFi and not 180guest (should be WonAteTeaElleAye)
 
+QUESTION:
 3. I cannot print. I am sending jobs to the Xerox (Josephine or Ada) and they're not printing.
 
 Answers:
@@ -30,8 +33,23 @@ JEFF REWRITE
 Problem: My second or external monitor is not working.
 
 Solution: If your monitor is not working, please try the following steps.
-1. Check to make sure the power cable is plugged in.
-2. Check to make sure all connections are all the way in.
-3. Is the power on? Press the power button.
-4. If the above steps don't work, try restarting the computer.
+1. Check to make sure the power cable is plugged in to the outlet.
+2. Check to make sure all connections from outlet to monitor are tight.
+3. Is the power on? Press the power button located behind the monitor on the right.
+4. If the above steps do not work, try restarting the computer.
 5. If all else fails, please contact IT with the link below.
+
+
+Problem: I can't log into the server. My password doesn't work.
+
+1. Is there a period "." between your firstname and last name? Example "chad.bettor@180la.com".
+2. Have you recently reset the password?
+3. Are you connected to the correct WiFi? You need to be connected to "WonAteTeaElleAye" in order to access the server.
+4. If all else fails, please contact IT with the link below.
+
+
+Problem: I can't print.
+
+1. Are you connected to the correct WiFi? You need to be connected to "WonAteTeaElleAye" in order to access the printers.
+2. Are you releasing the job at the printer? Hit the job status button, select your name, and select "Release All".
+3. Try pausing the job, turning WiFi off and back on, then resuming the job.
