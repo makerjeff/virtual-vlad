@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>speech synth</title>
+
+    <style>
+        input[type=text] {
+
+            font-size: 16px;
+            padding: 15px;
+            width: 80%;
+            border: 3px solid deepskyblue;
+
+            -webkit-appearance: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>People don't read.</h1>
+
+<form id="submit_form" action="#">
+    <label for="input_text">Say something:</label><br>
+    <input id="input_text" type="text" autofocus autocomplete="off"><br>
+    <select id="voice_select" name="voices"></select>
+    <button id="submit_button">submit</button>
+</form>
+
+<button id="stray_button"> static voice button </button>
+
+
+<script>
+
+    // reference:
+    // https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
+
+    var d = document;
+    var submit_form = d.getElementById('submit_form');
+    var input_text = d.getElementById('input_text');
+    var voice_select = d.getElementById('voice_select');
+    var submit_button = d.getElementById('submit_button');
+
+    var stray_button = d.getElementById('stray_button');
+
+    var title = d.getElementsByTagName('h1')[0];
+
+    // ---------------------
+    // speech synth setup --
+    // ---------------------
+    var synth = window.speechSynthesis;
+    var voices = [];
+
+    function populate_voice_list() {
+        voices = synth.getVoices();
+
+        for(var i = 0; i < voices.length; i++) {
+            var option = d.createElement('option');
+            option.textContent = voices[i].name + ' (' + voices[i].lang + ') ';
+
+            if (voices[i].default) {
+                option.textContent += ' -- DEFAULT';
+            }
+
+            option.setAttribute('data-lang', voices[i].lang);
+            option.setAttribute('data-name', voices[i].name);
+
+            voice_select.appendChild(option);
+        }
+    }
+
+    populate_voice_list();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populate_voice_list;
+    }
+
+    // ---------------
+    // events --------
+    // ---------------
+    submit_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var utter_this = new SpeechSynthesisUtterance(input_text.value);
+        var selected_option = voice_select.selectedOptions[0].getAttribute('data-name');
+
+        for (var i = 0; i < voices.length; i++) {
+            if(voices[i].name === selected_option) {
+                utter_this.voice = voices[i];
+            }
+        }
+
+        synth.speak(utter_this);
+
+        console.log('Saying: "' + input_text.value + '"');
+        input_text.value = '';
+
+
+    });
+
+    title.addEventListener('click', function(e) {
+        stray_button_utter(title.innerHTML);
+    });
+
+    stray_button.addEventListener('click', function(e) {
+        stray_button_utter(input_text.value);
+    });
+
+
+    function stray_button_utter(message) {
+        var utter_this = new SpeechSynthesisUtterance(message);
+        var voices = speechSynthesis.getVoices();
+
+
+        var voice_to_use;
+
+        voices.forEach(function(elem, ind, arr) {
+            if(elem.voiceURI ==='Google UK English Male') {
+                //console.log(elem);
+                voice_to_use = elem;
+            }
+        });
+
+        utter_this.voice = voice_to_use;
+
+        speechSynthesis.speak(utter_this);
+
+    }
+
+
+</script>
+
+</body>
+</html>

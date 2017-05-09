@@ -1,0 +1,37 @@
+1. Why does my second or external monitor not work?
+
+Answers are:
+1. Is it pugged in?
+2. Is the power cord attached to the power supply plugged all the way in?
+3. Is the power on? Please press the power button.
+4. Have you rebooted lately? Sometimes the video driver fails and a reboot is required to reset it.
+5. All else fails, contact IT.
+
+2. I cannot log into the server. My password isn't being accepted.
+
+Answers:
+1. Is there a "." between your first and last names? Example Chad.Bettor (not Chad Bettor or Chad.Bettor@180la.com)
+2. Have you reset it lately?
+3. Are you connected to the correct WiFi and not 180guest (should be WonAteTeaElleAye)
+
+3. I cannot print. I am sending jobs to the Xerox (Josephine or Ada) and they're not printing.
+
+Answers:
+
+1. Are you connected to the correct WiFi and not 180guest (should be WonAteTeaElleAye)
+2. Are you releasing the job at the printer itself by waking up to it and hitting the "Job Status" button, selecting your name and selecting Release all.
+3. Please try Pausing the job, turning WiFI off and back on, then Resuming the job
+
+4. Contact IT Support
+
+===============================
+JEFF REWRITE
+===============================
+Problem: My second or external monitor is not working.
+
+Solution: If your monitor is not working, please try the following steps.
+1. Check to make sure the power cable is plugged in.
+2. Check to make sure all connections are all the way in.
+3. Is the power on? Press the power button.
+4. If the above steps don't work, try restarting the computer.
+5. If all else fails, please contact IT with the link below.
