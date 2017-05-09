@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+    <script src="/js/textSanitizer.js"></script>
 
 
     <title>V2</title>
@@ -15,48 +20,107 @@
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
             cursor: pointer;
+            font-size: 3em;
+            padding:0 0 10px 0;
         }
+
 
         input[type=text] {
 
+            position: relative;
+
             font-size: 2em;
             padding: 15px;
-            width: 80%;
-            border: 3px solid deepskyblue;
+
+            box-sizing: border-box;
+
+            width: 100%;
+
+            border: 3px solid lightgray;
 
             color: deepskyblue;
 
             -webkit-appearance: none;
             outline: none;
         }
+        input[type=text]:focus {
+            border: 3px solid deepskyblue;
+
+
+        }
+
+        input[type=text]::placeholder {
+            color: rgba(201,201,201,1);
+        }
 
         button {
+
+            font-family: "Montserrat", sans-serif;
+            text-transform: uppercase;
             -webkit-appearance: none;
             outline: none;
 
-            padding: 15px;
+            padding: 15px 25px;
 
             background: deepskyblue;
 
             border: 3px solid deepskyblue;
             color: white;
+
+            cursor: pointer;
         }
+
+
+        /*.submit_form {*/
+
+        .container {
+
+            box-sizing: border-box;
+
+            width: 100%;
+            height: 100%;
+
+            position: absolute;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            flex-direction: column;
+
+            padding: 0 0 30px 0;
+        }
+
+        .submit_form {
+            width: 80%;
+        }
+
+
+        /* MOBILE STATE -- styles the screen, 'and' min-width */
+        @media only screen and (max-width: 414px) {
+
+            h1 {
+                font-size: 2em;
+            }
+
+            input[type=text]::placeholder {
+                color: rgba(201,201,201,1);
+                font-size: 0.65em;
+            }
+        }
+
+
     </style>
 </head>
 <body>
+<div id="container" class="container">
+    <h1>virtual vlad</h1>
+    <form id="submit_form" class="submit_form" action="#">
+        <input id="input_text" type="text" autofocus autocomplete="off" placeholder="Ask your question"><br>
+    </form>
+    <div id="result_div"></div>
 
-<h1>welcome to virtual vlad.</h1>
-
-<form id="submit_form" action="#">
-    <label for="input_text">Your problem:</label><br>
-    <input id="input_text" type="text" autofocus autocomplete="off"><br>
-    <select id="voice_select" name="voices"></select>
-    <button id="submit_button">submit</button>
-</form>
-
-<button id="stray_button"> static voice button </button>
-
-<div id="result_div"></div>
+</div>
 
 
 <script>
@@ -67,9 +131,9 @@
     var d = document;
     var submit_form = d.getElementById('submit_form');
     var input_text = d.getElementById('input_text');
-    var voice_select = d.getElementById('voice_select');
-    var submit_button = d.getElementById('submit_button');
-    var stray_button = d.getElementById('stray_button');
+//    var voice_select = d.getElementById('voice_select');
+//    var submit_button = d.getElementById('submit_button');
+//    var stray_button = d.getElementById('stray_button');
     var result_div = d.getElementById('result_div');
     var title = d.getElementsByTagName('h1')[0];
 
@@ -80,94 +144,63 @@
         'Please save me from myself.'
     ];
 
-    // ---------------------
-    // speech synth setup --
-    // ---------------------
+    // -------------------------
+    // Speech Synthesis Setup --
+    // -------------------------
     var synth = window.speechSynthesis;
-    var voices = [];
-
-    function populate_voice_list() {
-        voices = synth.getVoices();
-
-        for(var i = 0; i < voices.length; i++) {
-            var option = d.createElement('option');
-            option.textContent = voices[i].name + ' (' + voices[i].lang + ') ';
-
-            if (voices[i].default) {
-                option.textContent += ' -- DEFAULT';
-            }
-
-            option.setAttribute('data-lang', voices[i].lang);
-            option.setAttribute('data-name', voices[i].name);
-
-            voice_select.appendChild(option);
-        }
-    }
-
-    populate_voice_list();
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = populate_voice_list;
-    }
 
     // ---------------
-    // events --------
+    // EVENTS --------
     // ---------------
+
+    // --- form submission ---
     submit_form.addEventListener('submit', function(e) {
         e.preventDefault();
-        stray_button_utter(input_text.value);
+        utter_me(input_text.value);
 
         input_text.value = '';
 
     });
 
+    // --- title intro ---
     title.addEventListener('click', function(e) {
-        stray_button_utter(title.innerHTML + '. What seems to be the problem?');
+        utter_me('Welcome to Virtual Vlad. What seems to be the problem?');
     });
 
-    stray_button.addEventListener('click', function(e) {
-        stray_button_utter(input_text.value);
-        populate_result_div();
+    // --------------------
+    // FUNCTIONS ----------
+    // --------------------
 
-    });
-
-
-    function stray_button_utter(message) {
-        var utter_this = new SpeechSynthesisUtterance(message);
+    /**
+     *  Utter Me
+     *  @param sanitized_message  Sanitized string to say.
+     */
+    function utter_me(sanitized_message) {
+        var utter_this = new SpeechSynthesisUtterance(sanitized_message);
         var voices = speechSynthesis.getVoices();
 
-        console.log('Saying: "' + message + '"');
+        console.log('Saying: "' + sanitized_message + '"');
 
 
         var voice_to_use;
 
         voices.forEach(function(elem, ind, arr) {
             if(elem.voiceURI ==='Google UK English Male') {
+
                 //console.log(elem);
                 voice_to_use = elem;
             }
         });
 
         utter_this.voice = voice_to_use;
+        utter_this.rate = 0.9;
 
         speechSynthesis.speak(utter_this);
     }
 
-    function original_utter() {
-        var utter_this = new SpeechSynthesisUtterance(input_text.value);
-        var selected_option = voice_select.selectedOptions[0].getAttribute('data-name');
-
-        for (var i = 0; i < voices.length; i++) {
-            if(voices[i].name === selected_option) {
-                utter_this.voice = voices[i];
-            }
-        }
-
-        synth.speak(utter_this);
-
-        console.log('Saying: "' + input_text.value + '"');
-        input_text.value = '';
-    }
-
+    /**
+     * Populate the results div with dummy content.
+     */
     function populate_result_div() {
 
         $.ajax({
@@ -186,7 +219,7 @@
                     p.innerHTML = elem;
 
                     p.addEventListener('click', function(e) {
-                        stray_button_utter(p.innerHTML);
+                        utter_me(p.innerHTML);
                     });
 
                     result_div.appendChild(p);
