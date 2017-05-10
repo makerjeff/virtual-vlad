@@ -7,7 +7,7 @@
 var natural = require('natural');
 
 var stemmer = natural.PorterStemmer;
-var my_string = "I'm having trouble with the ada lovelace. I can't get the toner working. fuck you vlad for leaving us. ";
+var my_string = "I'm having trouble with the ada lovelace. I can't get the toner working. Paige sucks. ";
 
 
 console.log(stemmer.stem('mangoes'));

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/images/favicon.ico" />
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
@@ -193,6 +195,7 @@
         });
 
         utter_this.voice = voice_to_use;
+        utter_this.volume = 1;
         utter_this.rate = 0.9;
 
         speechSynthesis.speak(utter_this);
