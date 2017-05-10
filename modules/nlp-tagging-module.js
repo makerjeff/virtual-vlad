@@ -19,11 +19,16 @@ var tagger = new Tagger(lexicon, rules);
 // console.log(tagger.tag(my_string));
 // console.log(JSON.stringify(tagger.tag(my_string)));
 
-module.exports.get_tagging_info = function() {};
+module.exports.get_tagging_info = get_tagging_info;
 
 // =======================
 // private functions -----
 // =======================
+
+/**
+ * Get tagging info back as a standard JWX response array.
+ * @param clean_string
+ */
 function get_tagging_info(clean_string) {
 
 }
