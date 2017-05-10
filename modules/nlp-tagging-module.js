@@ -3,6 +3,8 @@
  */
 
 var natural = require('natural');
+
+var textSanitizer = require('./modules/textSanitizer-node');
 var Tagger = natural.BrillPOSTagger;
 
 var my_string = "Lys soldered the beautiful jewelry pieces.".split(' ');
@@ -19,6 +21,10 @@ var tagger = new Tagger(lexicon, rules);
 // console.log(tagger.tag(my_string));
 // console.log(JSON.stringify(tagger.tag(my_string)));
 
+// =======================
+// MODULE EXPORTS ========
+// =======================
+
 module.exports.get_tagging_info = get_tagging_info;
 
 // =======================
@@ -27,7 +33,7 @@ module.exports.get_tagging_info = get_tagging_info;
 
 /**
  * Get tagging info back as a standard JWX response array.
- * @param clean_string
+ * @param clean_string Sanitized string
  */
 function get_tagging_info(clean_string) {
 
