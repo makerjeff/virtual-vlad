@@ -92,10 +92,42 @@
     colors.forEach(function(elem, ind, arr){
         console.log(elem, ind);
 
-        color_html += '<span style="background-color: ' + v + ';" >' + v + ' </span>';
+        color_html += '<span style="background-color: ' + elem + ';" >' + elem + ' </span>';
     });
 
-    hints.innerHTML = 'Tap/click then say a color to change teh background color of the app. Try ' + color_html + '.';
+    hints.innerHTML = 'Tap/click then say a color to change the background color of the app. Try ' + color_html + '.';
+
+    // main events
+    document.body.onclick = function(){
+        recognition.start();                        // fires the recognition.
+        console.log('waiting for command.');
+    };
+
+
+
+    // recognition events
+    recognition.onresult = function(e) {
+        var last = e.results.length - 1;
+        var color = e.results[last][0].transcript;
+
+        diagnostic.textContent = 'Result received: ' + color + '.';
+        bg.style.backgroundColor = color;
+        console.log('Confidence: ' + e.results[0][0].confidence);
+    };
+
+    recognition.onspeechend = function(e) {
+        recognition.stop();                         // stops the recognition
+    };
+
+    recognition.onnomatch = function(e) {
+        diagnostic.textContent = 'I didn\'t recognize that color. ';
+    };
+
+    recognition.onerror = function(e) {
+        diagnostic.textContent = 'Error occurred in recognition: ' + e.error;
+    };
+
+
 </script>
 
 
