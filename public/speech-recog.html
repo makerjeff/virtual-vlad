@@ -127,6 +127,10 @@
         diagnostic.textContent = 'Error occurred in recognition: ' + e.error;
     };
 
+    recognition.onend = function(e) {
+        diagnostic.textContent = 'Recognition ended. ';
+    };
+
 
 </script>
 

@@ -6,6 +6,7 @@
 - [Speech Synthesis API](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis) Speech Synthesis.
 - [Speech Synthesis API: Team Treehouse](http://blog.teamtreehouse.com/getting-started-speech-synthesis-api) More understandable than the MDN version.
 - [Example of an audioAnalyser node and canvas drawing](https://html5-examples.herokuapp.com/taptap_experiment_2.html)
+- [Google's Speech Recognition Demo](https://www.google.com/intl/en/chrome/demos/speech.html)
 
 
 ## Notes
