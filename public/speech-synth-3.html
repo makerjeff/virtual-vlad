@@ -166,7 +166,13 @@
 
     // --- title intro ---
     title.addEventListener('click', function(e) {
-        utter_me('Welcome to Virtual Vlad. What seems to be the problem?');
+        utter_me(get_random_greeting());
+    });
+
+    window.addEventListener('load', function(e) {
+        window.setTimeout(function(e) {
+            utter_me(get_random_greeting());
+        }, 1000);
     });
 
     // --------------------
@@ -232,6 +238,26 @@
                 console.log('Error occurred during AJAX. ' + error);
             }
         });
+    }
+
+    function get_random_greeting() {
+        var greeting_db = [
+            'Welcome to Virtual Vlad.',
+            'Hello there.',
+            'Hi.',
+            'Hello human.',
+            'Greetings.',
+            'Greetings human.'
+        ];
+
+        var query_db = [
+            'What seems to be the problem?',
+            'How can I help you today?',
+            'Please state the nature of your technical emergency.'
+        ];
+
+        return greeting_db[Math.floor(Math.random() * greeting_db.length)] + ' ' +
+                query_db[Math.floor(Math.random() * query_db.length)];
     }
 
 

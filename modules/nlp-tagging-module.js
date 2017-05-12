@@ -2,6 +2,11 @@
  * Created by jefferson.wu on 5/8/17.
  */
 
+//TODO: STEPS
+    // 1. tokenize
+    // 2. stem
+    // 3. parts of speech
+
 var natural = require('natural');
 
 var textSanitizer = require('./modules/textSanitizer-node');
@@ -36,5 +41,15 @@ module.exports.get_tagging_info = get_tagging_info;
  * @param clean_string Sanitized string
  */
 function get_tagging_info(clean_string) {
+    return new Promise(function(resolve, reject) {
+        var return_data = tagger.tag(clean_string);
+
+        if (return_data) {
+            resolve({status: 'success', payload: {message: 'String tagged. ', data: return_data}});
+        } else {
+            resolve({status: 'error', payload: {message: 'Error tagging the string.'}});
+        }
+
+    });
 
 }

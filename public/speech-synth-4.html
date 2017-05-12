@@ -4,21 +4,300 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/css/style.css">-->
     <link rel="icon" href="/images/favicon.ico" />
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="/js/textSanitizer.js"></script>
+    <script src="/js/main.js"></script>
 
 
-    <title>V2</title>
+    <title>Virtual Vlad</title>
+
+    <!-- TODO: move to external CSS -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: rgb(243,243,243);
+
+        }
+
+        .container {
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+            flex-direction: column;
+
+        }
+
+        .search_container {
+
+            display: flex;
+            position: relative;
+            top: 0;
+            padding: 25px;
+
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .title {
+            padding: 25px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 3em;
+        }
+
+        .input_form {
+            width: 100%;
+            height: 100%;
+        }
+
+        input[type=text].input_field {
+            position: relative;
+            font-family: 'Lato', sans-serif;
+            font-size: 2em;
+            padding: 15px;
+            box-sizing: border-box;
+            width: 100%;
+            border: 5px solid lightgray;
+            color: #eb1b2d;
+            -webkit-appearance: none;
+            outline: none;
+
+            transition: all 250ms ease;
+        }
+        input[type=text].input_field:focus {
+            border: 5px solid #eb1b2d;
+        }
+        input[type=text].input_field::placeholder {
+            color: rgba(200,200,200,1);
+        }
+
+        .navigation {
+            padding: 25px;
+        }
+
+        .nav_links{
+            display: inline-block;
+            cursor: pointer;
+
+            padding: 0 15px;
+
+            transition: all 250ms ease;
+        }
+        .nav_links:hover {
+            color: #eb1b2d;
+            transform: scale(1.1, 1.1);
+        }
+
+        .result_container {
+
+            display: flex;
+
+            position: relative;
+
+            width: 80%;
+            max-width: 800px;
+
+            border: 1px dotted black;
+        }
+        .result_container, ul {
+            list-style: none;
+        }
+        .question_item {
+            padding: 25px;
+
+            /*border-top: 5px dotted black;*/
+
+            font-family: "Montserrat", sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: all 250ms ease;
+        }
+        .question_item:hover {
+            color: #eb1b2d;
+        }
 
 
+    </style>
+</head>
+
+<body>
+
+<div id="container" class="container">
+
+    <!-- SEARCH AND NAV -->
+    <div id="search_container" class="search_container">
+
+        <h1 id="title" class="title">Virtual Vlad</h1>
+
+        <form id="input_form" class="input_form" action="#">
+            <input id="input_field" class="input_field" type="text" autofocus autocomplete="off" placeholder="Type your question ">
+        </form>
+
+        <div id="navigation" class="navigation">
+            <ul>
+                <li class="nav_links">Settings</li>
+                <li class="nav_links">"Halp!"</li>
+                <li class="nav_links">Voice Recognition</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="result_container" class="result_container">
+        <ul>
+            <li class="question_item"> I can't print.</li>
+            <li class="question_item"> My external monitor isn't working. </li>
+            <li class="question_item"> I can't access the server. My password isn't working. </li>
+        </ul>
+    </div>
+
+
+</div>
 
 <script>
 
+    // ==========================
+    // HANDLES & VARS ===========
+    // ==========================
+    var d                   = document;
+    var search_container    = d.getElementById('search_container');
+    var title               = d.getElementById('title');
+    var input_form          = d.getElementById('input_form');
+    var input_field         = d.getElementById('input_field');
 
+    // ---------------------------
+    // Speech Synthesis ----------
+    // ---------------------------
+
+    var voices;
+    var voice_to_use;
+
+    //TODO: get these from server.
+    var greeting_db = [
+        'Welcome to Virtual Vlad.',
+        'Hello there.',
+        'Hi.',
+        'Hello human.',
+        'Greetings.',
+        'Greetings human.'
+    ];
+
+    var query_db = [
+        'What seems to be the problem?',
+        'How can I help you today?',
+        'Please state the nature of your technical emergency.'
+    ];
+
+
+    // ===========================
+    // EVENTS ====================
+    // ===========================
+
+    title.addEventListener('click', function(e) {
+        utter_me(get_random_greeting());
+    });
+
+    input_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        utter_me(textSanitizer.getSanitizedString(input_field.value));
+
+        input_field.value = '';
+
+        // temporarily fire off an utterance
+    });
+
+    window.addEventListener('load', function(e) {
+
+        init_speech_synth_voice();
+
+        window.setTimeout(function() {
+            utter_me(get_random_greeting());
+        }, 500);
+
+    });
+
+
+    // ===========================
+    // functions =================
+    // ===========================
+
+    var Timer = {
+        last_time: Date.now(),
+        num_in_seconds: 0,
+        timer: function() {
+            requestAnimationFrame(Timer.timer);
+
+            var current_time = Date.now();
+
+            if(current_time - Timer.last_time >= 1000) {
+                console.log('Time elapsed: ' + Timer.num_in_seconds + ' seconds.');
+
+                Timer.last_time = current_time;
+                Timer.num_in_seconds++;
+            }
+        }
+    };
+
+
+    function init_speech_synth_voice() {
+
+        speechSynthesis.onvoiceschanged = function() {
+
+            voices = speechSynthesis.getVoices();
+
+            voices.forEach(function(elem, ind, arr) {
+                if(elem.voiceURI === 'Google UK English Male') {
+                    voice_to_use = elem;
+                }
+            });
+        };
+    }
+
+    /**
+     * Utter the message provided.
+     * @param sanitized_message Sanitized string for the speechSynth to say.
+     */
+    function utter_me(sanitized_message) {
+        var utter_this = new SpeechSynthesisUtterance(sanitized_message);
+
+        console.log('Saying: "' + sanitized_message + '"');
+
+
+        utter_this.voice    = voice_to_use;
+        utter_this.volume   = 1.0;
+        utter_this.rate     = 1.0;
+
+        speechSynthesis.speak(utter_this);
+    }
+
+    function get_random_greeting() {
+        return greeting_db[Math.floor(Math.random() * greeting_db.length)] + ' ' +
+                query_db[Math.floor(Math.random() * query_db.length)];
+
+    }
 
 
 </script>
