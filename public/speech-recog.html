@@ -112,6 +112,7 @@
 
         diagnostic.textContent = 'Result received: ' + color + '.';
         bg.style.backgroundColor = color;
+        console.log('Color: ' + color);
         console.log('Confidence: ' + e.results[0][0].confidence);
     };
 
@@ -128,7 +129,8 @@
     };
 
     recognition.onend = function(e) {
-        diagnostic.textContent = 'Recognition ended. ';
+        console.log('Recognition ended.');
+        //diagnostic.textContent = 'Recognition ended. ';
     };
 
 
