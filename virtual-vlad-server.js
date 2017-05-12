@@ -118,10 +118,16 @@ api_router.get('/get_questions', function(req, res) {
 });
 
 api_router.post('/get_stems', function(req, res) {
-    nlp.get_stems(req.body.stringy);
-    console.log(req.body.stringy);
-    res.send('Stringy: ' + req.body.stringy);
+    nlp.get_stems(req.body.stringy).then(function(data) {
+        console.log(data);
+        res.json(data);
+    }).catch(function(reason){
+        console.log(reason);
+        res.json(reason);
+    });
 });
+
+// TODO: Route that processes individual words for string matches, or
 
 
 // register router

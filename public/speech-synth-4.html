@@ -138,7 +138,7 @@
             color: #eb1b2d;
         }
 
-<<<<<<< HEAD
+
         @keyframes fade_in {
             0% {opacity: 0;}
             50% {opacity: 0;}
@@ -150,11 +150,16 @@
             animation-fill-mode: forwards;
             animation-duration: 1s;
             animation-timing-function: ease;
+        }
 
-=======
         .sound_cloud {
             transform: scale(0.5, 0.5);
->>>>>>> d26577723d04b0cd4cad0d00896805f97136a676
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+
         }
 
 
@@ -165,8 +170,12 @@
 
 <div id="container" class="container">
 
+    <canvas id="canvas" class="canvas" width="600" height="100"></canvas>
+
+
     <!-- SEARCH AND NAV -->
     <div id="search_container" class="search_container animate_fade_in">
+
 
         <h1 id="title" class="title">Virtual Vlad</h1>
 
@@ -183,9 +192,6 @@
         </div>
     </div>
 
-    <div id="sound_cloud" class="sound_cloud">
-        <iframe width="400px" height="166px"  scrolling="no" frameborder="yes" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/34019569&amp;color=0066cc"></iframe>
-    </div>
 
     <!-- RESULTS -->
     <div id="result_container" class="result_container">
@@ -335,6 +341,11 @@
             data: {stringy: stringy},
             success: function(data, status, jqxhr) {
                 console.log(data);
+
+                //TODO: put into function
+                data.data.forEach(function(elem,ind,arr) {
+                    var p = document.createElement('p');
+                });
             },
             error: function(jqxhr, status, error) {
                 console.log(error);
