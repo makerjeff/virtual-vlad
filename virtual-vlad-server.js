@@ -16,10 +16,14 @@ const chalk             = require('chalk');
 const clear             = require('clear');
 const io                = require('socket.io')(http);
 
+const body_parser       = require('body-parser');
+const cookie_parser     = require('cookie-parser');
+
 // ------------------------
 // custom modules ---------
 // ------------------------
 const gqm = require(process.cwd() + '/models/get_questions_module');
+const nlp = require(process.cwd() + '/modules/nlp-tagging-module');
 
 // =========================
 // HTTPS ===================
@@ -67,6 +71,13 @@ app.use(function(req,res,next){
     next();
 });
 
+// --- enable body parser ---
+app.use(body_parser.json());
+app.use(body_parser.urlencoded({extended: false}));
+
+// -- enable cookie parser ---
+app.use(cookie_parser('tempcookieparskey'));    // TODO: remove from production.
+
 // ==================
 // ROUTES ===========
 // ==================
@@ -104,6 +115,12 @@ api_router.get('/get_questions', function(req, res) {
         console.log(reason);
         res.json(reason);
     });
+});
+
+api_router.post('/get_stems', function(req, res) {
+    nlp.get_stems(req.body.stringy);
+    console.log(req.body.stringy);
+    res.send('Stringy: ' + req.body.stringy);
 });
 
 

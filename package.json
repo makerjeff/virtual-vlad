@@ -19,6 +19,8 @@
     "chalk": "latest",
     "clear": "latest",
     "socket.io": "latest",
-    "natural":"latest"
+    "natural":"latest",
+    "cookie-parser":"latest",
+    "body-parser":"latest"
   }
 }

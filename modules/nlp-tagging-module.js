@@ -9,8 +9,10 @@
 
 var natural = require('natural');
 
-var textSanitizer = require('./modules/textSanitizer-node');
+var textSanitizer = require('./textSanitizer-node');
 var Tagger = natural.BrillPOSTagger;
+
+var stemmer = natural.PorterStemmer;
 
 var my_string = "Lys soldered the beautiful jewelry pieces.".split(' ');
 
@@ -31,6 +33,7 @@ var tagger = new Tagger(lexicon, rules);
 // =======================
 
 module.exports.get_tagging_info = get_tagging_info;
+module.exports.get_stems = get_stems;
 
 // =======================
 // private functions -----
@@ -51,5 +54,16 @@ function get_tagging_info(clean_string) {
         }
 
     });
+}
 
+function get_stems (clean_string) {
+    return new Promise(function(resolve, reject) {
+        var return_data = stemmer.tokenizeAndStem(clean_string);
+
+        if (return_data) {
+            resolve({status: 'success', payload: {message: 'Got stems.', data: return_data}});
+        } else {
+            reject({status: 'error', payload: {message: 'Errored out.', data: return_data}});
+        }
+    });
 }

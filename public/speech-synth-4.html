@@ -116,7 +116,7 @@
             width: 80%;
             max-width: 800px;
 
-            border: 1px dotted black;
+            /*border: 1px dotted black;*/
         }
         .result_container, ul {
             list-style: none;
@@ -128,7 +128,7 @@
 
             font-family: "Montserrat", sans-serif;
             font-size: 2em;
-            font-weight: 700;
+            font-weight: 500;
 
             cursor: pointer;
 
@@ -136,6 +136,20 @@
         }
         .question_item:hover {
             color: #eb1b2d;
+        }
+
+        @keyframes fade_in {
+            0% {opacity: 0;}
+            50% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        .animate_fade_in {
+            animation-name: fade_in;
+            animation-fill-mode: forwards;
+            animation-duration: 1s;
+            animation-timing-function: ease;
+
         }
 
 
@@ -147,7 +161,7 @@
 <div id="container" class="container">
 
     <!-- SEARCH AND NAV -->
-    <div id="search_container" class="search_container">
+    <div id="search_container" class="search_container animate_fade_in">
 
         <h1 id="title" class="title">Virtual Vlad</h1>
 
@@ -166,11 +180,11 @@
 
     <!-- RESULTS -->
     <div id="result_container" class="result_container">
-        <ul>
-            <li class="question_item"> I can't print.</li>
-            <li class="question_item"> My external monitor isn't working. </li>
-            <li class="question_item"> I can't access the server. My password isn't working. </li>
-        </ul>
+        <!--<ul id="result_container_ul">-->
+            <!--<li class="question_item"> I can't print.</li>-->
+            <!--<li class="question_item"> My external monitor isn't working. </li>-->
+            <!--<li class="question_item"> I can't access the server. My password isn't working. </li>-->
+        <!--</ul>-->
     </div>
 
 
@@ -223,6 +237,7 @@
         e.preventDefault();
 
         utter_me(textSanitizer.getSanitizedString(input_field.value));
+        submit_input(input_field.value);
 
         input_field.value = '';
 
@@ -297,6 +312,21 @@
         return greeting_db[Math.floor(Math.random() * greeting_db.length)] + ' ' +
                 query_db[Math.floor(Math.random() * query_db.length)];
 
+    }
+
+    // AJAX
+    function submit_input(stringy) {
+        $.ajax({
+            method: 'POST',
+            url: '/api/get_stems',
+            data: {stringy: stringy},
+            success: function(data, status, jqxhr) {
+                console.log(data);
+            },
+            error: function(jqxhr, status, error) {
+                console.log(error);
+            }
+        });
     }
 
 
