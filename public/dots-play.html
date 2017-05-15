@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dots play</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+            background: rgb(240,240,240);
+        }
+
+        .canvas {
+            /*border: 5px solid blue;*/
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" class="canvas" width="600" height="300"></canvas>
+<div id="result_div">0</div>
+
+<script>
+    var result_div = document.getElementById('result_div');
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var bbox = canvas.getBoundingClientRect();
+
+    ctx.imageSmoothingEnabled = false;
+
+
+    // ------------------
+    // ---- function ----
+    // ------------------
+    function init() {
+        ctx.fillStyle = 'rgb(0,0,0)';
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+    }
+
+    function draw_dots() {
+
+        ctx.fillStyle = 'rgba(100,100,100,0.5)';
+
+        for (var i = 0; i < 5000; i++) {
+            var random_x = Math.floor(Math.random() * canvas.width);
+            var random_y = Math.floor(Math.random() * canvas.height);
+
+//            console.log('creating dot ' + i + ' at: ' + random_x + ', ' + random_y);
+            ctx.fillRect(random_x, random_y, 5, 5);
+
+        }
+    }
+
+    // --- timing variables ---
+    var last_time = Date.now();
+    var frames_drawn = 0;
+    var fps = 15;
+
+    // --- random dot variables ---
+    var last_dot = {x:0, y:0};
+    var dot_width = 5;
+    var dot_height = 5;
+
+
+    // --- draw roaming dot ---
+    // dot will randomly draw in the neighborhood it was in
+    function draw_roaming_dot() {
+
+    }
+
+
+    var Dot = {
+        last_time: Date.now(),
+        frames_drawn: 0,
+        last_dot: {x:0, y:0},
+        dot_size: {x:5, y:5},
+
+        /**
+         * Draw Random Dot with a streak to follow.
+         * @param multiples How many dots to render at once.
+         */
+        draw_random_dot: function(multiples) {
+
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = 'rgba(0,255,0,0.5)';
+
+            for (var i = 0; i < multiples; i++) {
+                var rand_x = Math.floor(Math.random() * canvas.width);
+                var rand_y = Math.floor(Math.random() * canvas.height);
+
+                // draw dot
+                ctx.fillRect(rand_x, rand_y, this.dot_size.x, this.dot_size.y);
+
+                // draw line
+                ctx.beginPath();
+                ctx.moveTo(this.last_dot.x + this.dot_size.x / 2, this.last_dot.y + this.dot_size.y / 2);
+                ctx.lineTo(rand_x + this.dot_size.x / 2, rand_y + this.dot_size.y / 2);
+                ctx.stroke();
+
+                this.last_dot.x = rand_x;
+                this.last_dot.y = rand_y;
+
+                // fade out the dot
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        },
+
+        draw_roaming_dot: function() {
+
+            var max_distance = 10;
+            ctx.fillStyle = 'rgba(255,255,255,1.0)';
+
+            // todo: not really a vector, figure out vector math.
+            var rand_x = Math.floor(Math.random() * max_distance);
+        }
+    };
+
+
+
+
+
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+//        ctx.fillStyle = 'black';
+//        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // TIMER =================================
+        var current_time = Date.now();
+        if (current_time - last_time >= 1000/fps ) {
+
+            // update frame
+            Dot.draw_random_dot(1);
+            result_div.innerHTML = frames_drawn + ' at ' + fps + ' fps.';
+
+
+            // reset clock
+            last_time = current_time;
+            frames_drawn++;
+        }
+        // =======================================
+
+
+    }
+
+
+
+
+
+
+    // ----------------
+    // ---- events ----
+    // ----------------
+    window.addEventListener('load', function(e) {
+        init();
+//        draw_dots();
+
+        requestAnimationFrame(animate);
+    });
+
+    canvas.addEventListener('click', function(e) {
+        console.log('clicked ' + (e.clientX - bbox.left) + ', ' + (e.clientY - bbox.top));
+    });
+
+
+</script>
+
+</body>
+</html>
