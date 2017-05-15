@@ -29,8 +29,16 @@
             width: 100%;
             height: 100%;
             background: rgb(243,243,243);
-
         }
+
+        h1 { font-size: 2em }
+        h2 { font-size: 1.5em }
+        h3 { font-size: 1.17em }
+        h4 { font-size: 1em }
+        h5 { font-size: 0.83em }
+        h6 { font-size: 0.67em }
+
+
 
         .container {
             display: flex;
@@ -62,6 +70,8 @@
             text-transform: uppercase;
             cursor: pointer;
             font-size: 3em;
+
+            text-align: center;
         }
 
         .input_form {
@@ -109,7 +119,7 @@
 
         .result_container {
 
-            display: flex;
+            display: block;
 
             position: relative;
 
@@ -217,6 +227,7 @@
     var title               = d.getElementById('title');
     var input_form          = d.getElementById('input_form');
     var input_field         = d.getElementById('input_field');
+    var result_div          = d.getElementById('result_container');
 
     // ---------------------------
     // Speech Synthesis ----------
@@ -239,8 +250,7 @@
         'What seems to be the problem?',
         'How can I help you today?',
         'Please state the nature of your technical emergency.',
-        'How may I be of assistance?',
-        'What is your major malfunction?'
+        'How may I be of assistance?'
     ];
 
 
@@ -342,9 +352,16 @@
             success: function(data, status, jqxhr) {
                 console.log(data);
 
+
+                result_div.innerHTML = '';
+
                 //TODO: put into function
-                data.data.forEach(function(elem,ind,arr) {
-                    var p = document.createElement('p');
+                data.payload.data.forEach(function(elem,ind,arr) {
+                    var q_item = document.createElement('h4');
+                    q_item.classList.add('question_item', 'animate_fade_in');
+                    q_item.innerHTML = elem;
+
+                    result_div.appendChild(q_item);
                 });
             },
             error: function(jqxhr, status, error) {
