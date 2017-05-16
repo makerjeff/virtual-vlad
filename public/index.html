@@ -3,137 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
-    <title>V2</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/css/style.css">-->
+    <link rel="icon" href="/images/favicon.ico" />
 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/textSanitizer.js"></script>
+    <script src="/js/main.js"></script>
+
+
+    <title>Virtual Vlad</title>
+
+    <!-- TODO: move to external CSS -->
     <style>
-
         * {
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: rgb(243,243,243);
+        }
+
+        h1 { font-size: 2em }
+        h2 { font-size: 1.5em }
+        h3 { font-size: 1.17em }
+        h4 { font-size: 1em }
+        h5 { font-size: 0.83em }
+        h6 { font-size: 0.67em }
+
+        .container {
+            display: flex;
+            justify-content:center;
+            align-items: center;
+
+            flex-direction: column;
+        }
+
+        .search_container {
+
+            display: flex;
+            position: relative;
+            top: 0;
+            padding: 25px;
+
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .title {
+            padding: 25px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-size: 3em;
+            text-align: center;
+        }
+
+        .input_form {
+            width: 100%;
+            height: 100%;
+        }
+
+        input[type=text].input_field {
+            position: relative;
+            font-family: 'Lato', sans-serif;
+            font-size: 2em;
+            padding: 15px;
+            box-sizing: border-box;
+            width: 100%;
+            border: 5px solid lightgray;
+            color: #eb1b2d;
             -webkit-appearance: none;
             outline: none;
+
+            transition: all 250ms ease;
+        }
+        input[type=text].input_field:focus {
+            border: 5px solid #eb1b2d;
+        }
+        input[type=text].input_field::placeholder {
+            color: rgba(200,200,200,1);
         }
 
-        input[type=text]{
-            border: 3px solid transparent;
+        .navigation {
+            padding: 25px;
         }
 
-        @keyframes pulse {
-            0% {transform: scale(1,1)}
-            50% {transform: scale(1.2 , 1.2)}
-            100% {transform: scale(1,1)}
+        .nav_links{
+            display: inline-block;
+            cursor: pointer;
+            padding: 0 15px;
+            transition: all 250ms ease;
+        }
+        .nav_links:hover {
+            color: #eb1b2d;
+            transform: scale(1.1, 1.1);
         }
 
-        .animate_pulse {
-            animation-name: pulse;
-            animation-duration: 300ms;
-            animation-iteration-count: 1;
+        .result_container {
+
+            display: block;
+
+            position: relative;
+
+            width: 80%;
+            max-width: 800px;
+
+            /*border: 1px dotted black;*/
+        }
+        .result_container, ul {
+            list-style: none;
+        }
+        .question_item {
+            padding: 25px 0 10px 0;
+
+            /*border-top: 5px dotted black;*/
+
+            font-family: "Montserrat", sans-serif;
+            font-size: 2em;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition: all 250ms ease;
+        }
+        .question_item:hover {
+            color: #eb1b2d;
+        }
+
+
+        @keyframes fade_in {
+            0% {opacity: 0;}
+            50% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        .animate_fade_in {
+            animation-name: fade_in;
+            animation-fill-mode: forwards;
+            animation-duration: 1s;
             animation-timing-function: ease;
         }
 
-        #question {
-            width: auto;
+        .sound_cloud {
+            transform: scale(0.5, 0.5);
         }
 
+        canvas {
+            position: absolute;
+            top: 0;
+
+        }
+
+        /* ======================================================
+        /* MOBILE STATE -- styles the screen, 'and' min-width */
+        /* ======================================================
+         */
+        @media only screen and (max-width: 480px) {
+
+            .navigation {
+                /*TODO: HIDE normal navigation, show mobile navigation */
+            }
+        }
 
     </style>
 </head>
+
 <body>
 
-<div id="container">
-    <div id="question" class="question">How can i help you?</div>
+<div id="container" class="container">
 
-    <form id="input_form" action="#">
-        <input id="input_text" class="input_text" type="text" autofocus>
-        <button id="submit_button">(ask)</button>
-    </form>
-    
-    <div id="answers" class="answers"></div>
+    <!--<canvas id="canvas" class="canvas" width="600" height="100"></canvas>-->
+
+
+    <!-- SEARCH AND NAV -->
+    <div id="search_container" class="search_container animate_fade_in">
+
+
+        <h1 id="title" class="title">Virtual Vlad</h1>
+
+        <form id="input_form" class="input_form" action="#">
+            <input id="input_field" class="input_field" type="text" autofocus autocomplete="off" placeholder="Type your question ">
+        </form>
+
+        <div id="navigation" class="navigation">
+            <ul>
+                <li class="nav_links">Settings</li>
+                <li class="nav_links">Help</li>
+                <li class="nav_links">Speech Recognition</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- RESULTS -->
+    <div id="result_container" class="result_container">
+        <!--<ul id="result_container_ul">-->
+            <!--<li class="question_item"> I can't print.</li>-->
+            <!--<li class="question_item"> My external monitor isn't working. </li>-->
+            <!--<li class="question_item"> I can't access the server. My password isn't working. </li>-->
+        <!--</ul>-->
+    </div>
+
+
+
+
+
+
 </div>
 
 <script>
 
-    // -------------------
-    // GLOBAL VARIABLES --
-    // -------------------
-    var question_prompt = document.getElementById('question');
-    var input_form = document.getElementById('input_form');
-    var input_text = document.getElementById('input_text');
+    // ==========================
+    // HANDLES & VARS ===========
+    // ==========================
+    var d                   = document;
+    var search_container    = d.getElementById('search_container');
+    var title               = d.getElementById('title');
+    var input_form          = d.getElementById('input_form');
+    var input_field         = d.getElementById('input_field');
+    var result_div          = d.getElementById('result_container');
 
-    // WebAudio API variables
-    var audio_context = new (window.AudioContext || window.webkitAudioContext)();
+    // ---------------------------
+    // Speech Synthesis ----------
+    // ---------------------------
 
-    // -------------------
-    // FUNCTIONS ---------
-    // -------------------
-    // bing!
-    function bing_or_bong(options_object) {
-        // create oscillator
-        var oscillator = audio_context.createOscillator();
-        oscillator.type = 'sine';
-        oscillator.frequency.value = options_object.freq;
+    var voices;
+    var voice_to_use;
 
-        // create gain
-        var gain = audio_context.createGain();
-        oscillator.connect(gain);
-        gain.connect(audio_context.destination);
+    //TODO: get these from server.
+    var greeting_db = [
+        'Welcome to Virtual Vlad.',
+        'Hello there.',
+        'Hi.',
+        'Hello human.',
+        'Greetings.',
+        'Greetings human.'
+    ];
 
-
-        // create ramp
-        var now = audio_context.currentTime;
-
-        switch (options_object.type) {
-            case 'bing':
-                gain.gain.setValueAtTime(1, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1);
-
-                // ramp up
-                oscillator.frequency.setValueAtTime = options_object.freq;
-                oscillator.frequency.exponentialRampToValueAtTime(options_object.freq + 100, now + 1);
-                break;
-            case 'bong':
-                gain.gain.setValueAtTime(1, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1);
-
-                // ramp up
-                oscillator.frequency.setValueAtTime = options_object.freq;
-                oscillator.frequency.exponentialRampToValueAtTime(options_object.freq - 100, now + 1);
-                break;
-            default:
-                console.log('no type selected.');
-        }
+    var query_db = [
+        'What seems to be the problem?',
+        'How can I help you today?',
+        'Please state the nature of your technical emergency.',
+        'How may I be of assistance?'
+    ];
 
 
+    // ===========================
+    // EVENTS ====================
+    // ===========================
 
-        oscillator.start(now);
-        oscillator.stop(now + 1);
-    }
+    title.addEventListener('click', function(e) {
+        utter_me(get_random_greeting());
+    });
 
-
-    //TODO: continue
-    function get_debug_words() {}
-
-    // -------------------
-    // EVENTS ------------
-    // -------------------
+    // ---------------------------
+    // SUBMIT EVENT --------------
+    // ---------------------------
     input_form.addEventListener('submit', function(e) {
         e.preventDefault();
-        console.log('submission attempted.');
-        bing_or_bong({freq: 200, type: 'bong'});
+        utter_me(textSanitizer.getSanitizedString(input_field.value));
+        VirtualVlad.submit_input(input_field.value);
+        input_field.value = '';
     });
 
+    // ---------------------------
+    // LOAD EVENT ----------------
+    // ---------------------------
     window.addEventListener('load', function(e) {
-        console.log('Vlad: how can I help?');
-        bing_or_bong({freq: 200, type: 'bing'});
 
+        init_speech_synth_voice();          // initialized speech synth voices.
+        VirtualVlad.get_questions();        // get questions objects.
 
-        //TODO: animate opening
-        question_prompt.classList.add('animate_pulse');
-
-        question_prompt.addEventListener('animationend', function(e) {
-            question_prompt.classList.remove('animate_pulse');
-        });
+        // delay initial greeting
+        window.setTimeout(function() {
+            utter_me(get_random_greeting());
+        }, 500);
 
     });
+
+
+    // ===========================
+    // functions =================
+    // ===========================
+
+    var Timer = {
+        last_time: Date.now(),
+        num_in_seconds: 0,
+        timer: function() {
+            requestAnimationFrame(Timer.timer);
+
+            var current_time = Date.now();
+
+            if(current_time - Timer.last_time >= 1000) {
+                console.log('Time elapsed: ' + Timer.num_in_seconds + ' seconds.');
+
+                Timer.last_time = current_time;
+                Timer.num_in_seconds++;
+            }
+        }
+    };
+
+
+    /**
+     * Initialize speech sythesis.
+     */
+    function init_speech_synth_voice() {
+
+        speechSynthesis.onvoiceschanged = function() {
+            voices = speechSynthesis.getVoices();
+            voices.forEach(function(elem, ind, arr) {
+                if(elem.voiceURI === 'Google UK English Male') {
+                    voice_to_use = elem;
+                }
+            });
+        };
+    }
+
+    /**
+     * Utter the message provided.
+     * @param sanitized_message Sanitized string for the speechSynth to say.
+     */
+    function utter_me(sanitized_message) {
+        var utter_this = new SpeechSynthesisUtterance(sanitized_message);
+
+        console.log('Saying: "' + sanitized_message + '"');
+
+        utter_this.voice    = voice_to_use;
+        utter_this.volume   = 1.0;
+        utter_this.rate     = 1.0;
+
+        speechSynthesis.speak(utter_this);
+    }
+
+    function get_random_greeting() {
+        return greeting_db[Math.floor(Math.random() * greeting_db.length)] + ' ' +
+                query_db[Math.floor(Math.random() * query_db.length)];
+
+    }
+
+    // AJAX
+    function submit_input(stringy) {
+        $.ajax({
+            method: 'POST',
+            url: '/api/get_stems',
+            data: {stringy: stringy},
+            success: function(data, status, jqxhr) {
+                console.log(data);
+
+
+                result_div.innerHTML = '';
+
+                //TODO: put into function
+                data.payload.data.forEach(function(elem,ind,arr) {
+                    var q_item = document.createElement('h4');
+                    q_item.classList.add('question_item', 'animate_fade_in');
+                    q_item.innerHTML = elem;
+
+                    result_div.appendChild(q_item);
+                });
+            },
+            error: function(jqxhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // ========================================
+    // VIRTUAL VLAD MODULE (official build) ===
+    // ========================================
+    var VirtualVlad = {
+        questions: [],
+        submit_input: function(clean_string) {
+            $.ajax({
+                method: 'POST',
+                url: '/api/get_stems',
+                data: {stringy: clean_string},
+                success: function(data, status, jqxhr) {
+                    console.log(data);
+                    result_div.innerHTML = '';
+
+                    VirtualVlad.populate_results(data);
+                },
+                error: function(jqxhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        get_questions: function() {
+            $.ajax({
+                method: 'GET',
+                url: '/api/get_questions',
+                success: function(data, status, jqxhr) {
+                    VirtualVlad.questions = data.payload.data;
+                    console.log('Successfully loaded VirtualVlad.questions with data from server. ');
+                },
+                error: function(jqxhr, status, data) {}
+            });
+
+        },
+
+        populate_results: function(data) {
+
+            VirtualVlad.draw_results_header(data);
+
+            data.payload.data.forEach(function(elem, ind, arr) {
+                var q_item = document.createElement('h4');
+                q_item.classList.add('question_item', 'animate_fade_in');
+                q_item.innerHTML = elem;
+
+                result_div.appendChild(q_item);
+            });
+        },
+        draw_results_header: function(data) {
+            var p = document.createElement('p');
+            p.classList.add('animate_fade_in');
+            p.innerHTML = 'Your search for <b>"' + data.payload.search_string + '"</b> yielded <b>' + data.payload.data.length + '</b> results.';
+            result_div.appendChild(p);
+        }
+    };
+
+
+    /**
+     * Filtrator of Words
+     */
+    function filtrator_old (inputStr, dataArray) {
+        var returnArr = [];
+        var searchText = new RegExp("^" + inputStr.toLowerCase(), 'g'); //creates RegExpression out of text input, TODO: anchor to only beginning
+        //console.log(searchText);
+
+        dataArray.forEach(function(elem, ind, arr){
+            // check to see if string is in file name, if so push to array
+            if (elem.search(new RegExp(searchText, 'g')) !== -1) {
+                returnArr.push(elem);
+            }
+        });
+        //Debug.log(returnArr);   //array filtered from what was typed.
+        return returnArr;
+    }
 
 
 </script>

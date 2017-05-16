@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>V2</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+
+        * {
+            -webkit-appearance: none;
+            outline: none;
+        }
+
+        input[type=text]{
+            border: 3px solid transparent;
+        }
+
+        @keyframes pulse {
+            0% {transform: scale(1,1)}
+            50% {transform: scale(1.2 , 1.2)}
+            100% {transform: scale(1,1)}
+        }
+
+        .animate_pulse {
+            animation-name: pulse;
+            animation-duration: 300ms;
+            animation-iteration-count: 1;
+            animation-timing-function: ease;
+        }
+
+        #question {
+            width: auto;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="question" class="question">How can i help you?</div>
+
+    <form id="input_form" action="#">
+        <input id="input_text" class="input_text" type="text" autofocus>
+        <button id="submit_button">(ask)</button>
+    </form>
+    
+    <div id="answers" class="answers"></div>
+</div>
+
+<script>
+
+    // -------------------
+    // GLOBAL VARIABLES --
+    // -------------------
+    var question_prompt = document.getElementById('question');
+    var input_form = document.getElementById('input_form');
+    var input_text = document.getElementById('input_text');
+
+    // WebAudio API variables
+    var audio_context = new (window.AudioContext || window.webkitAudioContext)();
+
+    // -------------------
+    // FUNCTIONS ---------
+    // -------------------
+    // bing!
+    function bing_or_bong(options_object) {
+        // create oscillator
+        var oscillator = audio_context.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = options_object.freq;
+
+        // create gain
+        var gain = audio_context.createGain();
+        oscillator.connect(gain);
+        gain.connect(audio_context.destination);
+
+
+        // create ramp
+        var now = audio_context.currentTime;
+
+        switch (options_object.type) {
+            case 'bing':
+                gain.gain.setValueAtTime(1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1);
+
+                // ramp up
+                oscillator.frequency.setValueAtTime = options_object.freq;
+                oscillator.frequency.exponentialRampToValueAtTime(options_object.freq + 100, now + 1);
+                break;
+            case 'bong':
+                gain.gain.setValueAtTime(1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1);
+
+                // ramp up
+                oscillator.frequency.setValueAtTime = options_object.freq;
+                oscillator.frequency.exponentialRampToValueAtTime(options_object.freq - 100, now + 1);
+                break;
+            default:
+                console.log('no type selected.');
+        }
+
+
+
+        oscillator.start(now);
+        oscillator.stop(now + 1);
+    }
+
+
+    //TODO: continue
+    function get_debug_words() {}
+
+    // -------------------
+    // EVENTS ------------
+    // -------------------
+    input_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('submission attempted.');
+        bing_or_bong({freq: 200, type: 'bong'});
+    });
+
+    window.addEventListener('load', function(e) {
+        console.log('Vlad: how can I help?');
+        bing_or_bong({freq: 200, type: 'bing'});
+
+
+        //TODO: animate opening
+        question_prompt.classList.add('animate_pulse');
+
+        question_prompt.addEventListener('animationend', function(e) {
+            question_prompt.classList.remove('animate_pulse');
+        });
+
+    });
+
+
+</script>
+
+</body>
+</html>
