@@ -10,6 +10,10 @@
 - [Google's Speech Recognition Demo source code](https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html)
 - [Paper.js](http://paperjs.org/about/): Vector graphics manipulation library.
 
+## NPM Stack
+- [Natural](https://www.npmjs.com/package/natural) Natural language processing module for Node.
+- [Uglify-JS](https://www.npmjs.com/package/uglify-js) (Minification utility).
+
 
 ## Notes
 - **Need to have the cleanest content**: Super easy that anyone from tech to account could understand.
