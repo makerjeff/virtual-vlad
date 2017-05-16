@@ -38,15 +38,12 @@
         h5 { font-size: 0.83em }
         h6 { font-size: 0.67em }
 
-
-
         .container {
             display: flex;
             justify-content:center;
             align-items: center;
 
             flex-direction: column;
-
         }
 
         .search_container {
@@ -70,7 +67,6 @@
             text-transform: uppercase;
             cursor: pointer;
             font-size: 3em;
-
             text-align: center;
         }
 
@@ -107,9 +103,7 @@
         .nav_links{
             display: inline-block;
             cursor: pointer;
-
             padding: 0 15px;
-
             transition: all 250ms ease;
         }
         .nav_links:hover {
@@ -132,7 +126,7 @@
             list-style: none;
         }
         .question_item {
-            padding: 25px;
+            padding: 25px 0 10px 0;
 
             /*border-top: 5px dotted black;*/
 
@@ -172,6 +166,16 @@
 
         }
 
+        /* ======================================================
+        /* MOBILE STATE -- styles the screen, 'and' min-width */
+        /* ======================================================
+         */
+        @media only screen and (max-width: 480px) {
+
+            .navigation {
+                /*TODO: HIDE normal navigation, show mobile navigation */
+            }
+        }
 
     </style>
 </head>
@@ -180,7 +184,7 @@
 
 <div id="container" class="container">
 
-    <canvas id="canvas" class="canvas" width="600" height="100"></canvas>
+    <!--<canvas id="canvas" class="canvas" width="600" height="100"></canvas>-->
 
 
     <!-- SEARCH AND NAV -->
@@ -196,8 +200,8 @@
         <div id="navigation" class="navigation">
             <ul>
                 <li class="nav_links">Settings</li>
-                <li class="nav_links">"Halp!"</li>
-                <li class="nav_links">Voice Recognition</li>
+                <li class="nav_links">Help</li>
+                <li class="nav_links">Speech Recognition</li>
             </ul>
         </div>
     </div>
@@ -211,6 +215,8 @@
             <!--<li class="question_item"> I can't access the server. My password isn't working. </li>-->
         <!--</ul>-->
     </div>
+
+
 
 
 
@@ -262,21 +268,25 @@
         utter_me(get_random_greeting());
     });
 
+    // ---------------------------
+    // SUBMIT EVENT --------------
+    // ---------------------------
     input_form.addEventListener('submit', function(e) {
         e.preventDefault();
-
         utter_me(textSanitizer.getSanitizedString(input_field.value));
-        submit_input(input_field.value);
-
+        VirtualVlad.submit_input(input_field.value);
         input_field.value = '';
-
-        // temporarily fire off an utterance
     });
 
+    // ---------------------------
+    // LOAD EVENT ----------------
+    // ---------------------------
     window.addEventListener('load', function(e) {
 
-        init_speech_synth_voice();
+        init_speech_synth_voice();          // initialized speech synth voices.
+        VirtualVlad.get_questions();        // get questions objects.
 
+        // delay initial greeting
         window.setTimeout(function() {
             utter_me(get_random_greeting());
         }, 500);
@@ -306,12 +316,13 @@
     };
 
 
+    /**
+     * Initialize speech sythesis.
+     */
     function init_speech_synth_voice() {
 
         speechSynthesis.onvoiceschanged = function() {
-
             voices = speechSynthesis.getVoices();
-
             voices.forEach(function(elem, ind, arr) {
                 if(elem.voiceURI === 'Google UK English Male') {
                     voice_to_use = elem;
@@ -328,7 +339,6 @@
         var utter_this = new SpeechSynthesisUtterance(sanitized_message);
 
         console.log('Saying: "' + sanitized_message + '"');
-
 
         utter_this.voice    = voice_to_use;
         utter_this.volume   = 1.0;
@@ -368,6 +378,79 @@
                 console.log(error);
             }
         });
+    }
+
+    // ========================================
+    // VIRTUAL VLAD MODULE (official build) ===
+    // ========================================
+    var VirtualVlad = {
+        questions: [],
+        submit_input: function(clean_string) {
+            $.ajax({
+                method: 'POST',
+                url: '/api/get_stems',
+                data: {stringy: clean_string},
+                success: function(data, status, jqxhr) {
+                    console.log(data);
+                    result_div.innerHTML = '';
+
+                    VirtualVlad.populate_results(data);
+                },
+                error: function(jqxhr, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        get_questions: function() {
+            $.ajax({
+                method: 'GET',
+                url: '/api/get_questions',
+                success: function(data, status, jqxhr) {
+                    VirtualVlad.questions = data.payload.data;
+                    console.log('Successfully loaded VirtualVlad.questions with data from server. ');
+                },
+                error: function(jqxhr, status, data) {}
+            });
+
+        },
+
+        populate_results: function(data) {
+
+            VirtualVlad.draw_results_header(data);
+
+            data.payload.data.forEach(function(elem, ind, arr) {
+                var q_item = document.createElement('h4');
+                q_item.classList.add('question_item', 'animate_fade_in');
+                q_item.innerHTML = elem;
+
+                result_div.appendChild(q_item);
+            });
+        },
+        draw_results_header: function(data) {
+            var p = document.createElement('p');
+            p.classList.add('animate_fade_in');
+            p.innerHTML = 'Your search for <b>"' + data.payload.search_string + '"</b> yielded <b>' + data.payload.data.length + '</b> results.';
+            result_div.appendChild(p);
+        }
+    };
+
+
+    /**
+     * Filtrator of Words
+     */
+    function filtrator_old (inputStr, dataArray) {
+        var returnArr = [];
+        var searchText = new RegExp("^" + inputStr.toLowerCase(), 'g'); //creates RegExpression out of text input, TODO: anchor to only beginning
+        //console.log(searchText);
+
+        dataArray.forEach(function(elem, ind, arr){
+            // check to see if string is in file name, if so push to array
+            if (elem.search(new RegExp(searchText, 'g')) !== -1) {
+                returnArr.push(elem);
+            }
+        });
+        //Debug.log(returnArr);   //array filtered from what was typed.
+        return returnArr;
     }
 
 

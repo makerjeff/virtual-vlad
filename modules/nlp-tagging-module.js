@@ -48,9 +48,9 @@ function get_tagging_info(clean_string) {
         var return_data = tagger.tag(clean_string);
 
         if (return_data) {
-            resolve({status: 'success', payload: {message: 'String tagged. ', data: return_data}});
+            resolve({status: 'success', payload: {message: 'String tagged. ', search_string: clean_string, data: return_data}});
         } else {
-            resolve({status: 'error', payload: {message: 'Error tagging the string.'}});
+            resolve({status: 'error', payload: {message: 'Error tagging the string.', search_string: clean_string}});
         }
 
     });
@@ -61,9 +61,9 @@ function get_stems (clean_string) {
         var return_data = stemmer.tokenizeAndStem(clean_string);
 
         if (return_data) {
-            resolve({status: 'success', payload: {message: 'Got stems.', data: return_data}});
+            resolve({status: 'success', payload: {message: 'Got stems.', search_string: clean_string, data: return_data}});
         } else {
-            reject({status: 'error', payload: {message: 'Errored out.', data: return_data}});
+            reject({status: 'error', payload: {message: 'Errored out.', search_string: clean_string, data: return_data}});
         }
     });
 }
