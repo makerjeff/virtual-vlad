@@ -7,7 +7,8 @@
 - [Speech Synthesis API: Team Treehouse](http://blog.teamtreehouse.com/getting-started-speech-synthesis-api) More understandable than the MDN version.
 - [Example of an audioAnalyser node and canvas drawing](https://html5-examples.herokuapp.com/taptap_experiment_2.html)
 - [Google's Speech Recognition Demo](https://www.google.com/intl/en/chrome/demos/speech.html)
-- [Google's Speech Recognition Demo source code](https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html) (DO ME)
+- [Google's Speech Recognition Demo source code](https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html)
+- [Paper.js](http://paperjs.org/about/): Vector graphics manipulation library.
 
 
 ## Notes
