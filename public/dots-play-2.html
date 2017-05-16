@@ -146,19 +146,29 @@
     var up_key_down = false;
     var down_key_down = false;
 
-    function update_position() {
+    var diagonal_movement = false;
+
+    function move_dot(dot_speed) {
         if(left_key_down) {
-            dummy_x -= 10;
+            dummy_x -= dot_speed;    //TODO: find actual equation
         }
         else if (right_key_down) {
-            dummy_x += 10;
+            dummy_x += dot_speed;
         }
-
         if(up_key_down) {
-            dummy_y -= 10;
+            dummy_y -= dot_speed;
         }
         else if (down_key_down) {
-            dummy_y += 10;
+            dummy_y += dot_speed;
+        }
+    }
+
+    function update_position(speed) {
+
+        if (!diagonal_movement) {
+            move_dot(speed);
+        } else {
+            move_dot(speed * 0.5);
         }
     }
 
@@ -188,7 +198,7 @@
 
             draw_moving_dot({duration: 0.250, speed: 5});
 
-            update_position();
+            update_position(10);
 
             result_div.innerHTML = frames_drawn + ' at ' + fps + ' fps.';
 
@@ -236,8 +246,13 @@
             down_key_down = true;
         }
 
-        // TODO: 38 is up arrow
-        // TODO: 39 is down arrow
+        if (left_key_down && up_key_down || left_key_down && down_key_down || right_key_down && up_key_down || right_key_down && down_key_down) {
+            diagonal_movement = true;
+        } else {
+            diagonal_movement = false;
+        }
+
+
     });
 
     window.addEventListener('keyup', function(e) {
