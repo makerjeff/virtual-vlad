@@ -78,6 +78,7 @@
 
 
     var Dot = {
+        dots_array: [],         // holds all the dots to be animated
         last_time: Date.now(),
         frames_drawn: 0,
         last_dot: {x:0, y:0},
@@ -141,7 +142,7 @@
         if (current_time - last_time >= 1000/fps ) {
 
             // update frame
-            Dot.draw_random_dot(1);
+            //Dot.draw_random_dot(1);
             result_div.innerHTML = frames_drawn + ' at ' + fps + ' fps.';
 
 

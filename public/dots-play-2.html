@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dots play</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+            background: rgb(240,240,240);
+        }
+
+        .canvas {
+            /*border: 5px solid blue;*/
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" class="canvas" width="600" height="300"></canvas>
+<div id="result_div">0</div>
+
+<script>
+    var result_div = document.getElementById('result_div');
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var bbox = canvas.getBoundingClientRect();
+
+    ctx.imageSmoothingEnabled = false;
+
+
+    // ------------------
+    // ---- function ----
+    // ------------------
+    function init() {
+        ctx.fillStyle = 'rgb(0,0,0)';
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+
+        new Dot({id: 'Jeff', x: 25, y: 25, width: 5, height: 5});
+        new Dot({id: 'Shirley', x: 100, y: 25, width: 5, height: 5});
+
+    }
+
+
+    // --- timing variables ---
+    var last_time = Date.now();
+    var frames_drawn = 0;
+    var fps = 60;   // default 15.
+
+    // --- random dot variables ---
+    var last_dot = {x:0, y:0};
+    var dot_width = 5;
+    var dot_height = 5;
+
+    // global dot holder
+    var Dots = [];
+
+    // constructor
+    function Dot(options) {
+
+        this.id = options.id;
+        this.x = options.x;
+        this.y = options.y;
+
+        this.width = options.width;
+        this.height = options.height;
+
+        Dots.push(this);
+
+        console.log(this.width + 'x' + this.height + ' Dot created at ' + this.x + ', ' + this.y );
+    }
+
+    Dot.prototype.move_to = function(options) {
+        if (this.x !== options.x || this.y !== options.y) {
+
+            // move X
+            if (this.x < options.x) {
+                this.x += options.speed;
+            }
+            else if (this.x > options.x) {
+                this.x -= options.speed;
+            }
+            else {
+                console.log('landed X.');
+            }
+
+            // move Y
+            if (this.y < options.y) {
+                this.y += options.speed;
+            }
+            else if (this.y > options.y) {
+                this.y -= options.speed;
+            }
+            else {
+                console.log('landed Y.');
+            }
+        }
+    };
+
+
+    function render() {
+
+        // clear the canvas
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        Dots.forEach(function(elem, ind, arr) {
+            // before drawing the dot.
+            ctx.fillStyle = 'rgba(255,255,255,1.0)';
+            ctx.fillRect(elem.x, elem.y, elem.width, elem.height);
+        });
+
+
+    }
+
+    // dummy test
+
+    var dummy_x = 0;
+    var dummy_y = 150;
+
+    function draw_moving_dot(options) {
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = 'white';
+        ctx.fillRect(dummy_x, dummy_y, 10, 10);
+
+        // TODO: don't use while loop. it is blocking.
+//        if (dummy_x < 500) {
+//            dummy_x += options.speed/options.duration;
+//        }
+    }
+
+
+    var left_key_down = false;
+    var right_key_down = false;
+    var up_key_down = false;
+    var down_key_down = false;
+
+    var diagonal_movement = false;
+
+    function move_dot(dot_speed) {
+        if(left_key_down) {
+            dummy_x -= dot_speed;    //TODO: find actual equation
+        }
+        else if (right_key_down) {
+            dummy_x += dot_speed;
+        }
+        if(up_key_down) {
+            dummy_y -= dot_speed;
+        }
+        else if (down_key_down) {
+            dummy_y += dot_speed;
+        }
+    }
+
+    function update_position(speed) {
+
+        if (!diagonal_movement) {
+            move_dot(speed);
+        } else {
+            move_dot(speed * 0.5);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+//        ctx.fillStyle = 'black';
+//        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // TIMER =================================
+        var current_time = Date.now();
+        if (current_time - last_time >= 1000/fps ) {
+
+            // update frame
+//            render();
+
+//            Dots[0].move_to({x: 200, y: 300, speed: 2});
+
+            draw_moving_dot({duration: 0.250, speed: 5});
+
+            update_position(10);
+
+            result_div.innerHTML = frames_drawn + ' at ' + fps + ' fps.';
+
+
+            // reset clock
+            last_time = current_time;
+            frames_drawn++;
+        }
+        // =======================================
+
+
+    }
+
+
+
+
+
+
+    // ----------------
+    // ---- events ----
+    // ----------------
+    window.addEventListener('load', function(e) {
+        init();
+//        draw_dots();
+
+        requestAnimationFrame(animate);
+    });
+
+    canvas.addEventListener('click', function(e) {
+        console.log('clicked ' + (e.clientX - bbox.left) + ', ' + (e.clientY - bbox.top));
+    });
+
+    window.addEventListener('keydown', function(e) {
+        if (e.keyCode === 37) {
+            left_key_down = true;
+        }
+        else if (e.keyCode === 39) {
+            right_key_down = true;
+        }
+
+        if (e.keyCode === 38) {
+            up_key_down = true;
+        }
+        else if (e.keyCode === 40) {
+            down_key_down = true;
+        }
+
+        if (left_key_down && up_key_down || left_key_down && down_key_down || right_key_down && up_key_down || right_key_down && down_key_down) {
+            diagonal_movement = true;
+        } else {
+            diagonal_movement = false;
+        }
+
+
+    });
+
+    window.addEventListener('keyup', function(e) {
+        if (e.keyCode === 37) {
+            left_key_down = false;
+        }
+        else if (e.keyCode === 39) {
+            right_key_down = false;
+        }
+
+
+        if (e.keyCode === 38) {
+            up_key_down = false;
+        }
+        else if (e.keyCode === 40) {
+            down_key_down = false;
+        }
+    });
+
+
+</script>
+
+</body>
+</html>
