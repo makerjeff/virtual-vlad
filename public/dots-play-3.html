@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dots play</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+
+            background: rgb(240,240,240);
+        }
+
+        .canvas {
+            /*border: 5px solid blue;*/
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" class="canvas" width="600" height="300"></canvas>
+<div id="result_div"></div>
+
+<script>
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    /**
+     * DRAW CONCENTRIC SQUARES
+     */
+    function draw_concentric_squares() {
+        ctx.fillRect(0, 0, 150, 150);
+        ctx.save();                     // use this to store drawing information.
+
+        ctx.fillStyle = '#09F';
+        ctx.fillRect(15, 15, 120, 120);
+
+        ctx.save();                     // use this to store drawing information.
+        ctx.fillStyle = '#FFF';
+        ctx.globalAlpha = 0.5;
+        ctx.fillRect(30, 30, 90, 90);
+
+        ctx.restore();                  // use this to restore.
+        ctx.fillRect(45, 45, 60, 60);
+
+        ctx.restore();                  // use this to restore.
+        ctx.fillRect(60, 60, 30, 30);
+
+        draw_png();
+
+    }
+
+    function draw_multi_dots() {
+
+        ctx.fillStyle = '#090';
+
+        for (var i = 0; i < 5; i++) {
+            for (var j = 0; j < 5; j++) {
+                ctx.save();
+
+                ctx.fillStyle = 'rgb(' + (51 * i) + ', ' + (255-51* i) + ', 255)';
+                ctx.translate(10 + j * 50, 10 + i * 50);
+                ctx.fillRect(0, 0, 25, 25);
+                ctx.restore();
+            }
+        }
+
+        draw_png();
+    }
+
+    function draw_rotated() {
+        ctx.save();
+
+        // LEFT RECTS
+        // blue rect
+        ctx.fillStyle = '#0095DD';
+        ctx.fillRect(30, 30, 100, 100);
+
+        // rotate (TODO: can use this as the workhorse for positioning.
+        ctx.rotate(get_deg() * 25);        // (Math.PI/180) converts RADs to DEG
+
+        // grey rect
+        ctx.fillStyle = '#4D4E53';
+        ctx.fillRect(30, 30, 100, 100);
+        ctx.restore();
+
+        // RIGHT RECTS
+        // blue rect
+        ctx.fillStyle = '#0095DD';
+        ctx.fillRect(150, 30, 100, 100);
+
+        ctx.translate(200, 80); // translate to rectangle center.
+        ctx.rotate(get_deg() * 25);
+
+        ctx.translate(-200, -80);   // translate back
+
+        // draw grey rect
+        ctx.fillStyle = '#4D4E53';
+        ctx.fillRect(150, 30, 100, 100);
+
+        draw_png();
+    }
+
+    function draw_scaled() {
+        ctx.save();
+
+        ctx.scale(10,30);
+        ctx.fillRect(1, 10, 10, 10);
+
+        ctx.restore();
+
+        // mirror X
+        ctx.scale(-2, 2);
+        ctx.font = '48px serif';
+        ctx.fillText('JWX', -135, 120);
+
+        draw_png();
+    }
+
+    function draw_transforms() {
+
+    }
+
+
+    // --- helper functions ---
+
+    function get_deg() {
+        return (Math.PI/180);
+    }
+
+    function draw_png() {
+        // create image element and append.
+        var img = document.createElement('img');
+        img.src = canvas.toDataURL('image/png', 1.0);
+        document.getElementById('result_div').appendChild(img);
+    }
+
+    // --------------------------------
+    // EVENTS -------------------------
+    // --------------------------------
+
+    window.addEventListener('load', function(e) {
+//        draw_multi_dots();
+//        draw_rotated();
+//        draw_scaled();
+    });
+
+
+
+</script>
+
+</body>
+</html>

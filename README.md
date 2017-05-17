@@ -9,6 +9,8 @@
 - [Google's Speech Recognition Demo](https://www.google.com/intl/en/chrome/demos/speech.html)
 - [Google's Speech Recognition Demo source code](https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html)
 - [Paper.js](http://paperjs.org/about/): Vector graphics manipulation library.
+- [MDN: Canvas Transformations](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations)
+- [MDN: Canvas Drawing Shapes](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes)
 
 ## NPM Stack
 - [Natural](https://www.npmjs.com/package/natural) Natural language processing module for Node.
