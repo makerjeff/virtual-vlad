@@ -1,0 +1,11 @@
+[
+  {"text":"I am sick of the people of this country.", "label":"negative"},
+  {"text":"Kill everyone!", "label":"negative"},
+  {"text":"Kittens are great!", "label":"positive"},
+  {"text":"There are too many dollar bills on my bed to count!", "label":"positive"},
+  {"text":"My life is over, I'm going to end it tomorrow.", "label":"negative"},
+  {"text":"My wife is the best person in the world.", "label":"positive"},
+  {"text":"Three thousand monkeys take over Manhattan island!", "label": "negative"},
+  {"text":"Monkeys enjoy bananas in hammocks.", "label":"positive"},
+  {"text":"I can jump really really well!", "label":"positive"}
+]
