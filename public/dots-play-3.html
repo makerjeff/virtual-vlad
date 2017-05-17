@@ -125,9 +125,35 @@
         draw_png();
     }
 
-    function draw_transforms() {
+    function draw_transform() {
 
+        var sin = Math.sin(Math.PI/6);
+        var cos = Math.cos(Math.PI/6);
+
+        ctx.translate(100, 100);
+
+        var c = 0;
+
+        for (var i = 0; i <= 12; i++) {
+            c = Math.floor(255/12 * i);     // divide 255 colors by 12, then increment
+            ctx.fillStyle = 'rgb(' + c + ',' + c + ',' + c + ')';
+            ctx.fillRect(0,0,100,10);
+            ctx.transform(cos, sin, -sin, cos, 0, 0);
+        }
+
+        ctx.setTransform(-1, 0, 0, 1, 100, 100);
+        ctx.fillStyle = 'rgba(255, 128, 255, 0.5)';
+        ctx.fillRect(0, 50, 100, 100);
     }
+
+    function draw_arcs() {
+        ctx.beginPath();
+        ctx.arc(75, 75, 50, 0, Math.PI/180 * 90, false);
+
+        ctx.stroke();
+    }
+
+
 
 
     // --- helper functions ---
@@ -143,6 +169,28 @@
         document.getElementById('result_div').appendChild(img);
     }
 
+    // --- loops ---
+
+    var last_time = Date.now();
+    var fps = 60;
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        var current_time = Date.now();
+
+        if (current_time - last_time >= 1000/fps) {
+            // update positions + animate
+
+            // TODO: fill stuff here.
+
+            // reset clock
+            last_time = current_time;
+        }
+
+
+    }
+
     // --------------------------------
     // EVENTS -------------------------
     // --------------------------------
@@ -151,6 +199,8 @@
 //        draw_multi_dots();
 //        draw_rotated();
 //        draw_scaled();
+//        draw_transform();
+//        draw_arcs();
     });
 
 
