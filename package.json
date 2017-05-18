@@ -21,6 +21,7 @@
     "socket.io": "latest",
     "natural":"latest",
     "cookie-parser":"latest",
-    "body-parser":"latest"
+    "body-parser":"latest",
+    "wordnet-db":"latest"
   }
 }

@@ -8,9 +8,15 @@
 - [Example of an audioAnalyser node and canvas drawing](https://html5-examples.herokuapp.com/taptap_experiment_2.html)
 - [Google's Speech Recognition Demo](https://www.google.com/intl/en/chrome/demos/speech.html)
 - [Google's Speech Recognition Demo source code](https://github.com/GoogleChrome/webplatform-samples/blob/master/webspeechdemo/webspeechdemo.html)
+
+## Canvas
 - [Paper.js](http://paperjs.org/about/): Vector graphics manipulation library.
 - [MDN: Canvas Transformations](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations)
 - [MDN: Canvas Drawing Shapes](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes)
+- [MDN: Canvas Dashed Lines](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getLineDash) (Works with bezier curves too).
+
+## Examples
+- [Canvas Bezier Curve Example](http://blogs.sitepointstatic.com/examples/tech/canvas-curves/bezier-curve.html) (drag handles to affect points)
 
 ## NPM Stack
 - [Natural](https://www.npmjs.com/package/natural) Natural language processing module for Node.

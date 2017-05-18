@@ -7,5 +7,6 @@
   {"text":"My wife is the best person in the world.", "label":"positive"},
   {"text":"Three thousand monkeys take over Manhattan island!", "label": "negative"},
   {"text":"Monkeys enjoy bananas in hammocks.", "label":"positive"},
-  {"text":"I can jump really really well!", "label":"positive"}
+  {"text":"I can jump really really well!", "label":"positive"},
+  {"text":"I don't know how many times I've told myself to go eat the ice cream. I should eat the icecream. ", "label":"positive"}
 ]
