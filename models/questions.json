@@ -26,5 +26,13 @@
       "3. Pause the job. Turn off Wifi then back on again. Resume the job.",
       "4. if all else fails, please contact IT with the link below."
     ]
+  },
+
+  {
+    "problem":"I need to get software installed.",
+    "solution": [
+      "1. Some software can be installed to your User account. Try pointing your installer to /User/<firstname.lastname>/Applications/",
+      "2. If "
+    ]
   }
 ]
